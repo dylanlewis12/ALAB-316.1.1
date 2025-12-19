@@ -1,111 +1,51 @@
-
-//Part 1
 var menuLinks = [
+
   { text: 'about', href: '/about' },
-  { text: 'catalog', href: '#', subLinks: [
-    { text: 'all', href: '/catalog/all' },
-    { text: 'top selling', href: '/catalog/top' },
-    { text: 'search', href: '/catalog/search' },
-  ] },
-  { text: 'orders', href: '#', subLinks: [
-    { text: 'new', href: '/orders/new' },
-    { text: 'pending', href: '/orders/pending' },
-    { text: 'history', href: '/orders/history' },
-  ] },
-  { text: 'account', href: '#', subLinks: [
-    { text: 'profile', href: '/account/profile' },
-    { text: 'sign out', href: '/account/signout' },
-  ] },
+
+  { text: 'catalog', href: '/catalog' },
+
+  { text: 'orders', href: '/orders' },
+
+  { text: 'account', href: '/account' },
+
 ];
 
+
+//Part 1
 let mainEl = document.querySelector('main');
+console.log(mainEl);
+
 mainEl.style.backgroundColor = 'var(--main-bg)';
-mainEl.innerHTML = '<h1>DOM Manipulation</h1>';
-mainEl.classList.add('flex-ctr');
 
-let topMenuEl = document.getElementById('top-menu');
-topMenuEl.style.height = '100%';
-topMenuEl.style.backgroundColor = 'var(--top-menu-bg)';
-topMenuEl.classList.add('flex-around');
+mainEl.innerHTML = "<h1>DOM Manipulation</h1>";
 
-for (let link of menuLinks) {
-  let aTag = document.createElement('a');
-  aTag.setAttribute('href', link.href);
-  aTag.textContent = link.text;
-  topMenuEl.appendChild(aTag);
-}
+mainEl.classList.add("flex-ctr");
 
-// Part 2
-let subMenuEl = document.getElementById('sub-menu');
-subMenuEl.style.height = '100%';
-subMenuEl.style.backgroundColor = 'var(--sub-menu-bg)';
-subMenuEl.classList.add('flex-around');
-subMenuEl.style.position = 'absolute';
-subMenuEl.style.top = '0';
+//Part 2
+let topMenuEl = document.getElementById("top-menu");
 
-let topMenuLinks = topMenuEl.querySelectorAll('a');
+topMenuEl.style.height = "100%";
 
-topMenuEl.addEventListener('click', function(event) {
-  event.preventDefault();
+topMenuEl.style.backgroundColor = "var(--top-menu-bg)";
 
-  if (event.target.tagName.toLowerCase() !== 'a') {
-    return;
-  }
-  console.log(event.target.textContent);
+topMenuEl.classList.add("flex-around");
 
-  let clickedLink = event.target;
-  let linkObject = menuLinks.find(link => link.text === clickedLink.textContent);
+//Part 3
+/*
+Iterate over the entire menuLinks array and for each "link" object:
 
-  if (clickedLink.classList.contains('active')) {
-    clickedLink.classList.remove('active');
-  } else {
-    clickedLink.classList.add('active');
-  }
+Create an <a> element.
 
-  for(let link of topMenuLinks) {
-    if(link !== clickedLink) {
-      link.classList.remove('active');
-    }
-  }
+On the new element, add an href attribute with its value set to the href property of the "link" object.
 
-  if (!clickedLink.classList.contains('active')) {
-    subMenuEl.style.top = '0';
-  } else {
-    if (linkObject.subLinks) {
-      subMenuEl.style.top = '100%';
-      createSubMenu(linkObject.subLinks);
-    } else {
-      subMenuEl.style.top = '0';
-    }
-  }
-});
+Set the new element's content to the value of the text property of the "link" object.
 
-//helper function
-function createSubMenu(subLinks) {
-  subMenuEl.innerHTML = '';
+Append the new element to the topMenuEl element.
+*/
 
-  for (let link of subLinks) {
-    let aTag = document.createElement('a');
-    aTag.setAttribute('href', link.href);
+for(let link of menuLinks) {
+    let aTag = document.createElement("a");
+    aTag.setAttribute("href", link.href);
     aTag.textContent = link.text;
-    subMenuEl.appendChild(aTag);
-  }
+    topMenuEl.appendChild(aTag);
 }
-
-subMenuEl.addEventListener('click', function(event) {
-  event.preventDefault();
-
-  if (event.target.tagName.toLowerCase() !== 'a') {
-    return;
-  }
-
-  console.log(event.target.textContent);
-
-  subMenuEl.style.top = '0';
-
-  for(let link of topMenuLinks) {
-    link.classList.remove('active');
-  }
-
-  mainEl.innerHTML = `<h1>${event.target.textContent}</h1>`;
-});
